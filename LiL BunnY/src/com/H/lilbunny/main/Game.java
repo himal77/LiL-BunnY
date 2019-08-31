@@ -2,6 +2,8 @@ package com.H.lilbunny.main;
 
 
 import com.H.lilbunny.handlers.GameStateManager;
+import com.H.lilbunny.handlers.MyInput;
+import com.H.lilbunny.handlers.MyInputProcessor;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -25,6 +27,8 @@ public class Game implements ApplicationListener{
 	
 	public void create() {
 		
+		Gdx.input.setInputProcessor(new MyInputProcessor());
+		
 		sb = new SpriteBatch();
 		cam = new OrthographicCamera();
 		cam.setToOrtho(false, V_WIDTH, V_HEIGHT);
@@ -43,6 +47,7 @@ public class Game implements ApplicationListener{
 			accum -= STEP;
 			gsm.update(STEP);
 			gsm.render();
+			MyInput.update();
 		}
 	}
 	
