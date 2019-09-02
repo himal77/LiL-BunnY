@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="res"/>
 	<classpathentry kind="lib" path="/root/Downloads/Software/libgdx-nightly-20190824/gdx.jar"/>
 	<classpathentry kind="lib" path="/root/Downloads/Software/libgdx-nightly-20190824/gdx-backend-lwjgl.jar"/>
 	<classpathentry kind="lib" path="/root/Downloads/Software/libgdx-nightly-20190824/gdx-backend-lwjgl-natives.jar"/>
@@ -13,5 +14,6 @@
 	<classpathentry kind="lib" path="/root/Downloads/Software/libgdx-nightly-20190824/gdx-box2d.jar"/>
 	<classpathentry kind="lib" path="/root/Downloads/Software/libgdx-nightly-20190824/gdx-box2d-gwt.jar"/>
 	<classpathentry kind="lib" path="/root/Downloads/Software/libgdx-nightly-20190824/gdx-box2d-natives.jar"/>
+	<classpathentry kind="lib" path="/root/git/LiL-BunnY/LiL BunnY/res"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
