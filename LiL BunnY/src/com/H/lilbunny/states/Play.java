@@ -2,6 +2,7 @@ package com.H.lilbunny.states;
 
 
 import com.H.lilbunny.entities.Crystal;
+import com.H.lilbunny.entities.HUD;
 import com.H.lilbunny.entities.Player;
 import com.H.lilbunny.handlers.B2DVars;
 import com.H.lilbunny.handlers.GameStateManager;
@@ -25,6 +26,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -48,6 +50,8 @@ public class Play extends GameState{
 	
 	private Player player;
 	private Array<Crystal> crystals;
+	
+	private HUD hud;
 	
 	public Play(GameStateManager gsm) {
 		
@@ -73,8 +77,11 @@ public class Play extends GameState{
 		b2dCam = new OrthographicCamera();
 		b2dCam.setToOrtho(false, Game.V_WIDTH / ppm, Game.V_HEIGHT / ppm);
 		
+		//set up hud
+		hud = new HUD(player);
+		
 		///////////////////////////////////////////////////////////////
-	//go through all the cells in the layer
+	
 		
 		
 		
@@ -94,6 +101,11 @@ public class Play extends GameState{
 			if(cl.isPlayerOnGround()) {
 				player.getBody().applyForceToCenter(0, 250, true);
 			}
+		}
+		
+		// switch block color
+		if(MyInput.isPressed(MyInput.BUTTON2)) {
+			switchBlocks();
 		}
 	}
 	
@@ -126,6 +138,9 @@ public class Play extends GameState{
 		//clear screen
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		//set camera to follow player
+		cam.position.set(player.getPosition().x  * ppm + Game.V_WIDTH / 4, Game.V_HEIGHT / 2, 0);
+		cam.update();
 		
 		// draw tile map
 		tmr.setView(cam);
@@ -139,6 +154,10 @@ public class Play extends GameState{
 		for(int i = 0; i < crystals.size; i++) {
 			crystals.get(i).render(sb);
 		}
+		
+		//draw hud
+		sb.setProjectionMatrix(hudCam.combined);
+		hud.render(sb);
 		
 		//draw box2d world
 		if(debug) {
@@ -156,7 +175,7 @@ public class Play extends GameState{
 		//create player
 		bdef.position.set(100 / ppm, 200 / ppm);
 		bdef.type = BodyType.DynamicBody;
-		bdef.linearVelocity.set(0.1f, 0);
+		bdef.linearVelocity.set(1f, 0);
 		Body body = world.createBody(bdef);
 		
 		shape.setAsBox(14 / ppm, 14 / ppm);
@@ -276,6 +295,35 @@ public class Play extends GameState{
 			
 		}
 		
+	}
+	
+	private void switchBlocks() {
+		
+		Filter filter = player.getBody().getFixtureList().first().getFilterData();
+		short bits = filter.maskBits;
+		
+		//switch to next color 
+		// red -> green -> blue -> red
+		if((bits & B2DVars.BIT_RED) != 0) {
+			bits &= ~B2DVars.BIT_RED;
+			bits |= B2DVars.BIT_GREEN;
+		}else if((bits & B2DVars.BIT_GREEN) != 0) {
+			bits &= ~B2DVars.BIT_GREEN;
+			bits |= B2DVars.BIT_BLUE;
+		}else if((bits & B2DVars.BIT_BLUE) != 0) {
+			bits &= ~B2DVars.BIT_BLUE;
+			bits |= B2DVars.BIT_RED;
+		}
+		
+		//set new mask bits
+		filter.maskBits = bits;
+		player.getBody().getFixtureList().first().setFilterData(filter);
+		
+		//set new mask bits for foot
+		filter = player.getBody().getFixtureList().get(1).getFilterData();
+		bits &= ~B2DVars.BIT_CRYSTAL;
+		filter.maskBits = bits;
+		player.getBody().getFixtureList().get(1).setFilterData(filter);
 	}
 
 }

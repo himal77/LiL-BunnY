@@ -35,6 +35,7 @@ public class Game implements ApplicationListener{
 		res = new Content();
 		res.loadTexture("res/images/bunny.png", "bunny");
 		res.loadTexture("res/images/crystal.png", "crystal");
+		res.loadTexture("res/images/hud.png", "hud");
 		
 		sb = new SpriteBatch();
 		cam = new OrthographicCamera();
