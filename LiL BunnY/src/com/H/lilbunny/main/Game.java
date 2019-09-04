@@ -1,13 +1,13 @@
 package com.H.lilbunny.main;
 
 
+import com.H.lilbunny.handlers.Content;
 import com.H.lilbunny.handlers.GameStateManager;
 import com.H.lilbunny.handlers.MyInput;
 import com.H.lilbunny.handlers.MyInputProcessor;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Game implements ApplicationListener{
@@ -26,11 +26,15 @@ public class Game implements ApplicationListener{
 	
 	private GameStateManager gsm;
 	
+	public static Content res;
+	
 	public void create() {
-		
-		
-		
+	
 		Gdx.input.setInputProcessor(new MyInputProcessor());
+		
+		res = new Content();
+		res.loadTexture("res/images/bunny.png", "bunny");
+		res.loadTexture("res/images/crystal.png", "crystal");
 		
 		sb = new SpriteBatch();
 		cam = new OrthographicCamera();
